@@ -5,7 +5,7 @@ import java.util.stream.*;
 class CheckNumeric {
     public static void main(String[] args) {
         //Check if a string contains only numeric values.
-        String numValue = "abcd";
+        String numValue = "1234";
         boolean isNumeric = numValue.matches(".*\\d.*");
         if(isNumeric){
             System.out.println("The given string is numeric");
