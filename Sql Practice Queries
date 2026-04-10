@@ -1,0 +1,79 @@
+CREATE DATABASE join_practice;
+USE join_practice;
+
+-- Employees
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    city VARCHAR(50),
+    dept_id INT,
+    salary DOUBLE
+);
+
+-- Departments
+CREATE TABLE departments (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50)
+);
+
+-- Projects
+CREATE TABLE projects (
+    project_id INT PRIMARY KEY,
+    project_name VARCHAR(50),
+    dept_id INT
+);
+
+-- Employee Projects (Many-to-Many)
+CREATE TABLE employee_projects (
+    emp_id INT,
+    project_id INT,
+    PRIMARY KEY (emp_id, project_id)
+);
+
+-- Departments
+INSERT INTO departments VALUES
+(1, 'Engineering'),
+(2, 'HR'),
+(3, 'Finance'),
+(4, 'Marketing');
+
+-- Employees
+INSERT INTO employees VALUES
+(101, 'Amit', 'Pune', 1, 70000),
+(102, 'Neha', 'Mumbai', 2, 50000),
+(103, 'Raj', 'Pune', 1, 80000),
+(104, 'Sneha', 'Delhi', 3, 60000),
+(105, 'Arjun', 'Mumbai', NULL, 45000),
+(106, 'Priya', 'Pune', 4, 55000);
+
+-- Projects
+INSERT INTO projects VALUES
+(201, 'Project Alpha', 1),
+(202, 'Project Beta', 2),
+(203, 'Project Gamma', 1),
+(204, 'Project Delta', 3);
+
+-- Employee Projects
+INSERT INTO employee_projects VALUES
+(101, 201),
+(101, 203),
+(102, 202),
+(103, 201),
+(104, 204),
+(106, 203);
+
+
+-- 1.Get all employees with their department names
+
+select e.*, d.dept_name from employees e INNER JOIN departments d on e.dept_id = d.dept_id;
+
+-- 2.Show employee name and project names
+select e.name, p.project_name from employees e INNER JOIN employee_projects ep on e.emp_id = ep.emp_id INNER JOIN  projects p on ep.project_id = p.project_id;
+
+-- 3. List employees working in "Engineering" department
+select e.name from employees e where e.dept_id = (select d.dept_id from departments d where d.dept_name='Engineering');
+
+-- 4. Get all projects handled by "Engineering" department
+
+select p.project_name from projects p where p.dept_id = (select d.dept_id from departments d where d.dept_name='Engineering');
+
